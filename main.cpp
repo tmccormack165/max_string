@@ -11,15 +11,31 @@ bool check_final(int i, int input_length){
     return is_final;
 }
 
+int count_delims(string std_input, char delim){
+    int count = 0;
+    for(int i = 0; i < std_input.length(); i++){
+        if(std_input[i] == delim){
+            count++;
+        }
+    }
+    return count;
+}
 
 int main(){
     string std_input, longest_string = "", current_string = "";
+    string* s;
+    int *iarr;
+
     char delim = ' ';
     int max_length = 0, current_len = 0;
-    int input_length;
+    int input_length, nwords;
     bool is_final;
     cout << "Enter space-separated words (type q to quit): ";
     getline(cin, std_input);
+    nwords = count_delims(std_input, delim) + 1;
+    s = new string[nwords];
+    iarr = new int[nwords];
+
     input_length = std_input.length();
 
     /*
@@ -30,23 +46,24 @@ int main(){
                 - update the longest string
             - reset the current string and current length
     */
-
+    int hmr = 0;
     for(int i = 0; i < input_length; i++){
-        cout << std_input[i] << endl;
         current_string += std_input[i];
         is_final = check_final(i, input_length);
-        if(std_input[i] ==delim || is_final){
+        if(std_input[i] == delim || is_final){
             if(is_final){
                 current_len += 1;
             }
-            cout << "New Word" << endl;
-            cout << "current_len: " << current_len << endl;;
-            if(current_len > max_length){
+            s[hmr] = current_string;
+            iarr[hmr] = current_len;
+            if(current_len >= max_length){
                 max_length = current_len;
                 longest_string = current_string;
             }
+            
             current_string = "";
             current_len = 0;
+            hmr++;
         }
         else{
             current_len += 1;
@@ -54,9 +71,16 @@ int main(){
         
         
     }
-    cout << "Longest String: " << longest_string << endl;
-    cout << "Max Length: " << max_length << endl;
+    
 
+    cout << "Longest Words: " << endl;
+    for(int i = 0; i < nwords; i++){
+        if(iarr[i] == max_length){
+            cout << s[i] << endl;
+        }
+    }
+    delete[] s;
+    delete[] iarr;
 
     /*
     while(cin >> word1){
