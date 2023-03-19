@@ -21,17 +21,39 @@ int count_delims(string std_input, char delim){
     return count;
 }
 
+bool quit_application(string std_input, char quit_char){
+    bool exit_app = false;
+    int nchar = std_input.length();
+    if(nchar <= 1){
+        if(nchar == 0){
+            exit_app = true;
+        }
+        else if(std_input[0] == quit_char){
+            exit_app = true;
+        }
+    }
+
+    return exit_app;
+}
+
 int main(){
     string std_input, longest_string = "", current_string = "";
     string* s;
     int *iarr;
 
     char delim = ' ';
+    char quit_char = 'q';
     int max_length = 0, current_len = 0;
     int input_length, nwords;
     bool is_final;
-    cout << "Enter space-separated words (type q to quit): ";
+    
+    cout << "Enter space-separated words (type " << quit_char << " to quit): ";
     getline(cin, std_input);
+
+    if(quit_application(std_input, quit_char)){
+        return 0;
+    }
+
     nwords = count_delims(std_input, delim) + 1;
     s = new string[nwords];
     iarr = new int[nwords];
@@ -79,21 +101,9 @@ int main(){
             cout << s[i] << endl;
         }
     }
+
     delete[] s;
     delete[] iarr;
-
-    /*
-    while(cin >> word1){
-        cout << "Word: " << word1 << endl;
-        w1_len = word1.length();
-        for(int i = 0; i < w1_len; i++){
-            cout << word1[i] << endl;
-            if(word1[i] == '\0'){
-                cout << "Found newline" << endl;
-            }
-        }
-    }
-    */
-
+    
     return 0;
 }
